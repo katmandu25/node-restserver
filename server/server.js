@@ -1,5 +1,18 @@
+/*
+
+Para hacer un tag empleamos
+
+git tag -a v0.0.1 -m "Versión Beta"
+git tag --> Para comprobar que se ha creado el tag
+git push --tags
+
+*/
+
+
 require('./config/config');
 const express = require('express');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const app = express();
 
 const bodyParser = require('body-parser');
@@ -10,43 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/', function(req, res) {
-    //res.send('Hello World')  Puedo querer q la vuelta sea json. Asi que hago res.json
-    res.json('Hello world');
-})
+app.use(require('./routes/usuario'));
 
-app.get('/usuario', function(req, res) {
-    //res.send('Hello World')  Puedo querer q la vuelta sea json. Asi que hago res.json
-    res.json('get usuario');
-})
-
-app.post('/usuario', function(req, res) {
-
-    let body = req.body; // Procesa la información que recibe de las peticiones en formato x-www-form-urlencoded
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        })
-    } else {
-        res.json({
-            persona: body
-        });
-    }
-})
-
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id;
-    res.json({
-        id
-    });
-})
-
-app.delete('/usuario', function(req, res) {
-    //res.send('Hello World')  Puedo querer q la vuelta sea json. Asi que hago res.json
-    res.json('delete usuario');
-})
+mongoose.connect('mongodb://localhost:27017/cafe', { useNewUrlParser: true }, (err, res) => {
+    if (err) throw err;
+    console.log('Base de datos ONLINE');
+});
 
 app.listen(process.env.PORT, () => {
     console.log("Escuchando puerto", 3000);
