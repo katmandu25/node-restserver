@@ -11,7 +11,6 @@ git push --tags
 
 require('./config/config');
 const express = require('express');
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const app = express();
 
